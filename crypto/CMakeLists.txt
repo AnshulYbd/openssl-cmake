@@ -24,6 +24,9 @@
 # SOFTWARE.
 
 include( CMakeParseArguments )
+SET( CMAKE_EXE_LINKER_FLAGS   "-ldl")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
 
 string(TIMESTAMP BUILDINF_DATE "%Y-%m-%d %H:%M:%S UTC" UTC)
 configure_file( buildinf.h.cmake buildinf.h )
@@ -287,6 +290,7 @@ if( WIN32 AND NOT CYGWIN )
 else()
   if( Threads_FOUND )
     target_link_libraries( crypto ${CMAKE_THREAD_LIBS_INIT} )
+    target_link_libraries(crypto pthread)
   endif()
   if( DSO_DLFCN AND HAVE_DLFCN_H )
     target_link_libraries( crypto dl )
